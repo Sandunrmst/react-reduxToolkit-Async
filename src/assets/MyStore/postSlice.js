@@ -8,7 +8,7 @@ const initialState = {
 
 export const getPost = createAsyncThunk('getPost', async ()=>{
     try{
-        const res = await fetch('https://jsonplaceholder.typicoe.com/post')
+        const res = await fetch('https://jsonplaceholder.typicode.com/posts')
         const data = await res.json()
         if(data){
             return data
@@ -40,3 +40,5 @@ const postSlice = createSlice({
     })
    }
 })
+
+export default postSlice.reducer
