@@ -7,17 +7,15 @@ const initialState = {
 }
 
 export const getPost = createAsyncThunk('getPost', async ()=>{
-    try{
         const res = await fetch('https://jsonplaceholder.typicode.com/posts')
         const data = await res.json()
-        if(data){
+
+        console.log(data)
+        if(Array.isArray(data)){
             return data
         }else{
-            return{err:'some error'}
+            return{err:'some error'} //action.payload.err
         }
-    }catch(error){
-        return{err:'some error'}
-    }
 })
 
 const postSlice = createSlice({
@@ -30,8 +28,13 @@ const postSlice = createSlice({
     })
 
     builder.addCase(getPost.fulfilled, (state, action)=> {
-        state.loading = 'completed'
-        state.data = action.payload
+        if(action.payload.err){
+            state.loading = 'failed'
+            state.error = action.payload.err
+        }else{
+            state.loading = 'completed'
+            state.data = action.payload
+        }
 
     })
 
